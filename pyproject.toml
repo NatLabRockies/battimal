@@ -1,0 +1,140 @@
+[build-system]
+requires = ["setuptools>=61.0"]
+build-backend = "setuptools.build_meta"
+
+[tool.setuptools]
+package-dir = {"" = "src"}
+
+[tool.setuptools.packages.find]
+where = ["src"]
+include = ["battimal*"]
+namespaces = true
+exclude = ["build*", "tests*"]
+
+[project]
+name = "battimal"
+authors = [
+    {name = "Kinshuk Panda"},
+    {name = "Nina Prakash"},
+    {name = "Malik Hassanaly", email= "Malik.Hassanaly@nlr.gov"},
+    {name = "Paul Gasper", email = "Paul.Gasper@nlr.gov"},
+]
+description = "Battery Intelligence and Machine Learning: Connect battery data processing, feature extraction, and model feature/target formatting into one package."
+readme = "README.md"
+requires-python = ">=3.12"
+# version = "v0.0.1"
+# keywords = ["one", "two"]
+license = {text = "BSD-3-Clause"}
+classifiers = [
+    "Programming Language :: Python :: 3",
+]
+dependencies = [
+    "numpy",
+    "scipy>=1.15",
+    "pandas",
+    "plotly",
+    "SALib",
+    "scikit-learn",
+    "seaborn",
+    "tables",
+    "threadpoolctl",
+    "jax",
+    "jaxlib",
+    "joblib",
+    "numpyro",
+    "corner",
+    "emcee",
+    "codespell",
+    "h5py",
+    "imageio",
+    "xgboost",
+    "matplotlib",
+    "optax",
+    "regex",
+]
+dynamic = ["version"]
+
+[project.optional-dependencies]
+notebooks = [
+    "jupyter",
+    "ipykernel",
+]
+develop = [
+    "ruff",
+    "codespell",
+    "mypy",
+    "pytest",
+]
+
+[tool.pytest.ini_options]
+minversion = "6.0"
+addopts = "-ra -q"
+testpaths = [
+    "tests",
+]
+
+# Ruff configuration - balanced between strictness and forgiveness
+[tool.ruff]
+line-length = 100  # Slightly longer than default 88
+target-version = "py312"  # Match your Python version
+
+exclude = [
+    ".h5",
+    ".txt",
+    ".ipynb",
+    ".xlsx",
+    ".json",
+]
+
+[tool.ruff.lint]
+# Essential rules - focused on correctness and readability
+select = [
+    "E",    # pycodestyle errors (spacing, line length, etc.)
+    "F",    # Pyflakes (unused imports, undefined variables)
+    "W",    # pycodestyle warnings
+    "UP",   # pyupgrade (modernize Python syntax) 
+    "B",    # flake8-bugbear (common bugs)
+    "I",    # isort (import sorting)
+    "N",    # pep8-naming (basic naming conventions)
+    "RUF",  # Ruff-specific rules
+]
+
+ignore = [
+    "E501",   # Line too long (let formatter handle this)
+    "B008",   # Do not perform function calls in argument defaults (common in ML/data science)
+    "N806",   # Variable in function should be lowercase (allows X, y for ML conventions)
+    "N803",   # Argument should be lowercase (allows X, y, etc.)
+]
+
+# Allow unused variables when underscore-prefixed
+dummy-variable-rgx = "^(_+|(_+[a-zA-Z0-9_]*[a-zA-Z0-9]+?))$"
+
+[tool.ruff.lint.per-file-ignores]
+"__init__.py" = [
+    "F401",  # Allow unused imports in __init__.py
+    "F403",  # Allow star imports in __init__.py
+]
+"tests/*" = [
+    "N802",  # Function names can be non-lowercase in tests
+    "N806",  # Variables can be non-lowercase in tests  
+]
+"notebooks/*" = [
+    "F401",  # Unused imports common in notebooks
+    "E402",  # Imports don't need to be at top in notebooks
+]
+"scripts/*" = [
+    "T201",  # Print statements OK in scripts
+]
+
+[tool.ruff.format]
+# Standard formatting preferences
+quote-style = "double"
+indent-style = "space"
+skip-magic-trailing-comma = false
+line-ending = "auto"
+docstring-code-format = true
+
+[tool.ruff.lint.isort]
+# Group imports nicely
+known-first-party = ["battimal"]
+force-sort-within-sections = true

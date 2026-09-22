@@ -1,0 +1,5 @@
+matplotlib
+numpy
+pandas
+scipy
+beep==2022.10.3.16 
