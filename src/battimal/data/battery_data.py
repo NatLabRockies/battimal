@@ -141,12 +141,12 @@ class EchemMeasurement:
         Convert the EchemMeasurement data to a pandas DataFrame.
         :return: A pandas DataFrame with the measurement data.
         """
-        return pd.DataFrame({
-            'Current_A': self.Current_A,
-            'Voltage_V': self.Voltage_V,
-            'Step': self.Step,
-            'Time_s': self.Time_s
-        })
+        data_dict = {}
+        expected_length = len(self.Time_s)
+        for attr_name, attr_value in self.__dict__.items():
+            if isinstance(attr_value, (list, np.ndarray)) and len(attr_value) == expected_length:
+                data_dict[attr_name] = attr_value
+        return pd.DataFrame(data_dict)
     
     def to_h5(self, hdf5: pd.HDFStore, measurement_key: str = 'measurement'):
         """
